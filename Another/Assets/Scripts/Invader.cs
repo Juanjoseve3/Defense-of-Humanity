@@ -10,6 +10,8 @@ public class Invader : MonoBehaviour
 
     private SpriteRenderer _spriteRenderer;
     private int _animationFrame;
+    public static int score;
+    public static int alienValue = 10;
 
     private void Awake()
     {
@@ -39,6 +41,12 @@ public class Invader : MonoBehaviour
         {
             killed.Invoke();
             gameObject.SetActive(false);
+            score += alienValue;
         }
+    }
+
+    public static string ScoreCount()
+    {
+        return score.ToString();
     }
 }

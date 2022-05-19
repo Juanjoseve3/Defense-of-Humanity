@@ -9,8 +9,15 @@ public class Player : MonoBehaviour
 
     private bool _laserActive;
 
-    private int life = 3;
+    public int life = 3;
 
+    public Canvas PauseMenu;
+
+
+    private void Start()
+    {
+        PauseMenu.enabled = false;
+    }
     private void Update()
     {
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
@@ -24,6 +31,16 @@ public class Player : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             Shoot();
+        }
+        if (Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.P))
+        {
+            PauseMenu.enabled = true;
+            Time.timeScale = 0;
+        }
+        else if (Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.P))
+        {
+            PauseMenu.enabled = false;
+            Time.timeScale = 1;
         }
     }
 
@@ -46,11 +63,7 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Invader") || other.gameObject.layer == LayerMask.NameToLayer("Missile"))
         {
-            life -= 1;
-            if (life <= 0)
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
+            Lifes.LifesCount -= 1;
         }
     }
 }

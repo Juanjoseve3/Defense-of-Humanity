@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -82,7 +83,7 @@ public class Invaders : MonoBehaviour
             { 
                 continue; 
             }
-            if (Random.value < (1.0f / AmountAlive))
+            if (UnityEngine.Random.value < (1.0f / AmountAlive))
             {
                 Instantiate(missilePrefab, invader.position, Quaternion.identity);
                 break;
@@ -90,13 +91,13 @@ public class Invaders : MonoBehaviour
 
         }
     }
-        private void InvaderKilled()
+    private void InvaderKilled()
     {
         AmountKilled++;
 
         if (AmountAlive >= TotalInvaders)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadSceneAsync("Another_2");
         }    
     }
 }
