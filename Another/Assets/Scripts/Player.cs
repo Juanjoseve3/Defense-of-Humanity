@@ -37,11 +37,6 @@ public class Player : MonoBehaviour
             PauseMenu.enabled = true;
             Time.timeScale = 0;
         }
-        else if (Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.P))
-        {
-            PauseMenu.enabled = false;
-            Time.timeScale = 1;
-        }
     }
 
     private void Shoot()
@@ -61,9 +56,13 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Invader") || other.gameObject.layer == LayerMask.NameToLayer("Missile"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Missile"))
         {
             Lifes.LifesCount -= 1;
+        }
+        if (other.gameObject.layer == LayerMask.NameToLayer("Invader"))
+        {
+            Lifes.LifesCount -= 3;
         }
     }
 }

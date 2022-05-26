@@ -1,17 +1,24 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Invader : MonoBehaviour
+public class Person : MonoBehaviour
 {
+
     public Sprite[] animationSprites;
 
     public float animationTime = 1.0f;
 
-    public System.Action killed;
-
     private SpriteRenderer _spriteRenderer;
     private int _animationFrame;
     public static int score;
-    public static int alienValue = 10;
+    public static int personValue = 20;
+
+    public Vector3 direction;
+
+    public float speed;
+
+    public System.Action destroyed;
 
     private void Awake()
     {
@@ -21,6 +28,11 @@ public class Invader : MonoBehaviour
     private void Start()
     {
         InvokeRepeating(nameof(AnimateSprite), animationTime, animationTime);
+    }
+
+    private void Update()
+    {
+        transform.position += direction * speed * Time.deltaTime;
     }
 
     private void AnimateSprite()
@@ -37,11 +49,10 @@ public class Invader : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Laser"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            killed.Invoke();
             gameObject.SetActive(false);
-            score += alienValue;
+            score += personValue;
         }
     }
 

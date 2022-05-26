@@ -10,6 +10,11 @@ public class Score : MonoBehaviour
     public TextMeshPro scoreText;
     public void Update()
     {
-        scoreText.text = "Score: " + Invader.ScoreCount();
+        scoreText.text = "Score: " + GeneralScore();
+    }
+
+    private int GeneralScore()
+    {
+        return Invader.ScoreCount() + Person.ScoreCount();
     }
 }

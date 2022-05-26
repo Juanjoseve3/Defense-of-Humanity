@@ -1,16 +1,21 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Invaders : MonoBehaviour
-{
+public class Invaders_lvl_2 : MonoBehaviour
+{ 
     public Invader[] prefabs;
     public int rows = 5;
     public int columns = 11;
     public AnimationCurve speed;
     public Projectile missilePrefab;
+    public Person personPrefab;
+
 
     public float missileAttackRate = 1.0f;
+
+    public float personSpawnRate = 0.5f;
     public int AmountKilled { get; private set; }
     public int AmountAlive => TotalInvaders - AmountKilled;
     public int TotalInvaders => rows * columns;
@@ -39,6 +44,7 @@ public class Invaders : MonoBehaviour
     private void Start()
     {
         InvokeRepeating(nameof(MissileAttack), missileAttackRate, missileAttackRate);
+        InvokeRepeating(nameof(PersonSpawn), personSpawnRate, personSpawnRate);
     }
 
     private void Update()   
@@ -91,13 +97,29 @@ public class Invaders : MonoBehaviour
 
         }
     }
+
+    private void PersonSpawn()
+    {
+        foreach (Transform invader in transform)
+        {
+            if (!invader.gameObject.activeInHierarchy)
+            {
+                continue;
+            }
+            if (Random.value < (1.0f / AmountAlive))
+            {
+                Instantiate(personPrefab, invader.position, Quaternion.identity);
+                break;
+            }
+        }
+    }
     private void InvaderKilled()
     {
         AmountKilled++;
 
         if (AmountKilled >= TotalInvaders)
         {
-            SceneManager.LoadScene("Another_2");
+            SceneManager.LoadScene("Credits");
         }    
     }
 }

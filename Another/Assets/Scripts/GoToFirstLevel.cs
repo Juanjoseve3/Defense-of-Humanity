@@ -5,10 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GoToFirstLevel : MonoBehaviour
 {
-
-    public void LoadScene(string sceneName)
+    public void LoadGame()
     {
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene("Another");
+        Time.timeScale = 1f;
     }
-
 }
