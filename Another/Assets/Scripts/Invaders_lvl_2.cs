@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Invaders_lvl_2 : MonoBehaviour
-{ 
+{
+    //Se crea la matriz de enemigos
     public Invader[] prefabs;
     public int rows = 5;
     public int columns = 11;
@@ -21,6 +22,9 @@ public class Invaders_lvl_2 : MonoBehaviour
     public int TotalInvaders => rows * columns;
     public float PercentKilled => AmountKilled / TotalInvaders;
     private Vector3 _direction = Vector2.right;
+
+    //Antes de que empiece se calcula el centro de cada sprite y hasta donde llega cada sprite para saber cuando
+    //llegará a los bordes laterales
     private void Awake()
     {
         for (int row = 0; row < rows; row++)
@@ -41,12 +45,15 @@ public class Invaders_lvl_2 : MonoBehaviour
         }
     }
 
+    //Cuando se inicia el juego empiezan a lanzarse personas y a dispararse los misiles
     private void Start()
     {
         InvokeRepeating(nameof(MissileAttack), missileAttackRate, missileAttackRate);
         InvokeRepeating(nameof(PersonSpawn), personSpawnRate, personSpawnRate);
     }
 
+    //Se va actualizando la velocidad y posición de los enemigos, donde la velocidad aumenta mientras más
+    //enemigos sean eliminados
     private void Update()   
     {
         float speed = this.speed.Evaluate(PercentKilled);
@@ -65,13 +72,15 @@ public class Invaders_lvl_2 : MonoBehaviour
             if (_direction == Vector3.right && invader.position.x >= (rightEdge.x - 1.0f))
             {
                 AdvanceRow();
-            } else if (_direction == Vector3.left && invader.position.x <= (leftEdge.x + 1.0f))
+            } 
+            else if (_direction == Vector3.left && invader.position.x <= (leftEdge.x + 1.0f))
             {
                 AdvanceRow();
             }
         }
     }
 
+    //Direcciones de avance 
     private void AdvanceRow()
     {
         _direction.x *= -1.0f;
@@ -81,6 +90,7 @@ public class Invaders_lvl_2 : MonoBehaviour
         transform.position = position;
     }
 
+    //Código de ataque de misiles
     private void MissileAttack()
     {
         foreach (Transform invader in transform)
@@ -98,6 +108,7 @@ public class Invaders_lvl_2 : MonoBehaviour
         }
     }
 
+    //Código que deja caer las personas
     private void PersonSpawn()
     {
         foreach (Transform invader in transform)
@@ -113,13 +124,15 @@ public class Invaders_lvl_2 : MonoBehaviour
             }
         }
     }
+
+    //Código que permite avanzar de nivel
     private void InvaderKilled()
     {
         AmountKilled++;
 
         if (AmountKilled >= TotalInvaders)
         {
-            SceneManager.LoadScene("Credits");
+            SceneManager.LoadScene("Another_final");
         }    
     }
 }

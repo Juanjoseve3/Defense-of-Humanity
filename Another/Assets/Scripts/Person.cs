@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Person : MonoBehaviour
 {
-
+    //Los sprites que permiten la animación
     public Sprite[] animationSprites;
 
+    //Tiempo que dura la animación
     public float animationTime = 1.0f;
 
+    //Renderizador del sprite
     private SpriteRenderer _spriteRenderer;
     private int _animationFrame;
     public static int score;
@@ -20,21 +22,25 @@ public class Person : MonoBehaviour
 
     public System.Action destroyed;
 
+    //Antes de empezar se busca el componente que renderiza el sprite
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    //Cuando se inicia empieza la animación
     private void Start()
     {
         InvokeRepeating(nameof(AnimateSprite), animationTime, animationTime);
     }
 
+    //Actualiza la posición de las personas haciendo que caigan
     private void Update()
     {
         transform.position += direction * speed * Time.deltaTime;
     }
 
+    //Anima cada persona
     private void AnimateSprite()
     {
         _animationFrame++;
@@ -47,6 +53,7 @@ public class Person : MonoBehaviour
         _spriteRenderer.sprite = animationSprites[_animationFrame];
     }
 
+    //Se pone un colisionador para cuando el jugador recoja una persona esta desaparezca 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
@@ -56,6 +63,7 @@ public class Person : MonoBehaviour
         }
     }
 
+    //Retorna el valor de la persona
     public static int ScoreCount()
     {
         return score;

@@ -1,8 +1,9 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Invaders : MonoBehaviour
+public class Invader_final : MonoBehaviour
 {
     //Se crea la matriz de enemigos
     public Invader[] prefabs;
@@ -10,8 +11,12 @@ public class Invaders : MonoBehaviour
     public int columns = 11;
     public AnimationCurve speed;
     public Projectile missilePrefab;
+    public Person personPrefab;
+
 
     public float missileAttackRate = 1.0f;
+
+    public float personSpawnRate = 0.5f;
     public int AmountKilled { get; private set; }
     public int AmountAlive => TotalInvaders - AmountKilled;
     public int TotalInvaders => rows * columns;
@@ -40,15 +45,16 @@ public class Invaders : MonoBehaviour
         }
     }
 
-    //Cuando se inicia el juego empiezan a dispararse los misiles
+    //Cuando se inicia el juego empiezan a lanzarse personas y a dispararse los misiles
     private void Start()
     {
         InvokeRepeating(nameof(MissileAttack), missileAttackRate, missileAttackRate);
+        InvokeRepeating(nameof(PersonSpawn), personSpawnRate, personSpawnRate);
     }
 
     //Se va actualizando la velocidad y posición de los enemigos, donde la velocidad aumenta mientras más
     //enemigos sean eliminados
-    private void Update()   
+    private void Update()
     {
         float speed = this.speed.Evaluate(PercentKilled);
         transform.position += _direction * speed * Time.deltaTime;
@@ -59,14 +65,15 @@ public class Invaders : MonoBehaviour
         foreach (Transform invader in transform)
         {
             if (!invader.gameObject.activeInHierarchy)
-            { 
-                continue; 
+            {
+                continue;
             }
 
             if (_direction == Vector3.right && invader.position.x >= (rightEdge.x - 1.0f))
             {
                 AdvanceRow();
-            } else if (_direction == Vector3.left && invader.position.x <= (leftEdge.x + 1.0f))
+            }
+            else if (_direction == Vector3.left && invader.position.x <= (leftEdge.x + 1.0f))
             {
                 AdvanceRow();
             }
@@ -89,8 +96,8 @@ public class Invaders : MonoBehaviour
         foreach (Transform invader in transform)
         {
             if (!invader.gameObject.activeInHierarchy)
-            { 
-                continue; 
+            {
+                continue;
             }
             if (UnityEngine.Random.value < (1.0f / AmountAlive))
             {
@@ -101,6 +108,23 @@ public class Invaders : MonoBehaviour
         }
     }
 
+    //Código que deja caer las personas
+    private void PersonSpawn()
+    {
+        foreach (Transform invader in transform)
+        {
+            if (!invader.gameObject.activeInHierarchy)
+            {
+                continue;
+            }
+            if (Random.value < (1.0f / AmountAlive))
+            {
+                Instantiate(personPrefab, invader.position, Quaternion.identity);
+                break;
+            }
+        }
+    }
+
     //Código que permite avanzar de nivel
     private void InvaderKilled()
     {
@@ -108,7 +132,7 @@ public class Invaders : MonoBehaviour
 
         if (AmountKilled >= TotalInvaders)
         {
-            SceneManager.LoadScene("Another_2");
-        }    
+            SceneManager.LoadScene("Credits");
+        }
     }
 }

@@ -1,5 +1,7 @@
 using UnityEngine;
 
+
+//Este código es el principal para las defensas que protegen al jugador de los ataques alienigenas
 public class Bunker : MonoBehaviour
 {
     public int bunkerLife;
@@ -7,6 +9,8 @@ public class Bunker : MonoBehaviour
     {
         bunkerLife = 5;
     }
+
+    //Hacemos que los sprites tengan colisión con los misiles del jugador y de los alienigenas
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Invader"))

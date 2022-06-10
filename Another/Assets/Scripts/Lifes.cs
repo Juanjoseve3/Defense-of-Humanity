@@ -5,19 +5,23 @@ using UnityEngine.UI;
 
 public class Lifes : MonoBehaviour
 {
+    //Número de vidas junto con las imagenes que las representa
     public static int LifesCount;
     public Image Life_1;
     public Image Life_2;
     public Image Life_3;
 
+    //Canvas en el que se encuentran las vidas
     public Canvas GameOver;
 
+    //Al empezar cada nivel se iniciará con 3 vidas
     private void Start()
     {
         LifesCount = 3;
         GameOver.enabled = false;
     }
 
+    //Se actualiza cada perdida de vida
     private void Update()
     {
         if (LifesCount == 3)
